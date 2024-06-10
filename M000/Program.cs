@@ -1,15 +1,32 @@
-﻿Console.Write("Meter pro Sekunde: ");
-int meter = int.Parse(Console.ReadLine());
-Console.Write("Stunden: ");
-int std = int.Parse(Console.ReadLine());
-Console.Write("Minuten: ");
-int min = int.Parse(Console.ReadLine());
-Console.Write("Sekunden: ");
-int sek = int.Parse(Console.ReadLine());
+﻿bool schaltjahr = false;
+int jahr = 2000;
+if (jahr % 4 == 0)
+{
+	schaltjahr = true;
+	if (jahr % 100 == 0)
+		schaltjahr = false;
+	if (jahr % 400 == 0)
+		schaltjahr = true;
+}
+Console.WriteLine($"{jahr} ist {(schaltjahr ? "ein" : "kein")} Schaltjahr");
 
-double gesamtzeit = sek + (min * 60) + (std * 3600.0);
-double gesamtStd = gesamtzeit / 3600d;
 
-Console.WriteLine($"Meter/Sekunde:\t  {Math.Round(meter / gesamtzeit, 2)}");
-Console.WriteLine($"Kilometer/Stunde: {Math.Round(meter / 1000d / gesamtStd, 2)}");
-Console.WriteLine($"Meilen/Stunde:\t  {Math.Round(meter / 1000d * 0.62137119 / gesamtStd, 2)}");
+int[] gewinnzahlen = [33, 18, 27, 12, 75];
+string eingabe = Console.ReadLine();
+int eingabeZahl = int.Parse(eingabe);
+if (eingabeZahl >= 0 && eingabeZahl <= 100)
+{
+    Console.WriteLine(gewinnzahlen.Contains(eingabeZahl) ? "Glückwunsch" : "Zahl nicht enthalten");
+	//if (gewinnzahlen.Contains(eingabeZahl))
+	//{
+	//	Console.WriteLine("Glückwunsch!");
+	//}
+	//else
+	//{
+	//	Console.WriteLine("Zahl nicht enthalten");
+	//}
+}
+else
+{
+    Console.WriteLine("Zahl muss zwischen 0 und 100 liegen");
+}
