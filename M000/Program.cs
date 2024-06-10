@@ -1,32 +1,50 @@
-﻿bool schaltjahr = false;
-int jahr = 2000;
-if (jahr % 4 == 0)
+﻿while (true)
 {
-	schaltjahr = true;
-	if (jahr % 100 == 0)
-		schaltjahr = false;
-	if (jahr % 400 == 0)
-		schaltjahr = true;
-}
-Console.WriteLine($"{jahr} ist {(schaltjahr ? "ein" : "kein")} Schaltjahr");
+	Console.Write("Gib eine Zahl ein: ");
+	double z1 = double.Parse(Console.ReadLine());
 
+	Console.Write("Gib eine weitere Zahl ein: ");
+	double z2 = double.Parse(Console.ReadLine());
 
-int[] gewinnzahlen = [33, 18, 27, 12, 75];
-string eingabe = Console.ReadLine();
-int eingabeZahl = int.Parse(eingabe);
-if (eingabeZahl >= 0 && eingabeZahl <= 100)
-{
-    Console.WriteLine(gewinnzahlen.Contains(eingabeZahl) ? "Glückwunsch" : "Zahl nicht enthalten");
-	//if (gewinnzahlen.Contains(eingabeZahl))
-	//{
-	//	Console.WriteLine("Glückwunsch!");
-	//}
-	//else
-	//{
-	//	Console.WriteLine("Zahl nicht enthalten");
-	//}
+	Console.WriteLine("Gib eine Rechenart ein: ");
+	foreach (Rechenarten art in Enum.GetValues<Rechenarten>())
+	{
+		Console.WriteLine($"{(int) art}: {art}");
+	}
+
+	Rechenarten r = Enum.Parse<Rechenarten>(Console.ReadLine());
+	if (!Enum.IsDefined<Rechenarten>(r))
+	{
+		Console.WriteLine("Ungültige Rechenart");
+		break;
+	}
+
+	switch (r)
+	{
+		case Rechenarten.Addition:
+			Console.WriteLine($"Ergebnis: {z1 + z2}");
+			break;
+		case Rechenarten.Subtraktion:
+			Console.WriteLine($"Ergebnis: {z1 - z2}");
+			break;
+		case Rechenarten.Multiplikation:
+			Console.WriteLine($"Ergebnis: {z1 * z2}");
+			break;
+		case Rechenarten.Division:
+			Console.WriteLine($"Ergebnis: {z1 / z2}");
+			break;
+	}
+
+    Console.WriteLine("Enter drücken zum Wiederholen");
+	if (Console.ReadKey(true).Key != ConsoleKey.Enter)
+		break;
+	Console.Clear();
 }
-else
+
+enum Rechenarten
 {
-    Console.WriteLine("Zahl muss zwischen 0 und 100 liegen");
+	Addition = 1,
+	Subtraktion,
+	Multiplikation,
+	Division
 }
