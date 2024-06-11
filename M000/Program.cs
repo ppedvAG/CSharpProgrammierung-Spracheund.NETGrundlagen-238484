@@ -1,75 +1,108 @@
-﻿while (true)
+﻿Fahrzeug f = new Fahrzeug("VW", 200, 20_000);
+f.StarteMotor();
+f.Beschleunige(50);
+f.Beschleunige(200);
+f.StoppeMotor();
+f.Beschleunige(-100);
+Console.WriteLine(f.Info());
+f.Beschleunige(-50);
+f.StoppeMotor();
+
+class Fahrzeug
 {
-	double z1 = ZahlEingabe("Gib eine Zahl ein: ");
-	double z2 = ZahlEingabe("Gib eine weitere Zahl ein: ");
-	Rechenarten r = RechenartEingabe();
+	public string Name { get; set; }
 
-	Berechne(z1, z2, r);
+	public int MaxV { get; set; }
 
-    Console.WriteLine("Enter drücken zum Wiederholen");
-	if (Console.ReadKey(true).Key != ConsoleKey.Enter)
-		break;
-	Console.Clear();
-}
+	public int AktV { get; private set; }
 
-double Berechne(double z1, double z2, Rechenarten art)
-{
-	switch (art)
+	public int Preis { get; set; }
+
+	public bool MotorLaeuft { get; private set; }
+
+	public void StarteMotor()
 	{
-		case Rechenarten.Addition:
-			Console.WriteLine($"{z1} + {z2} = {z1 + z2}");
-			return z1 + z2;
-		case Rechenarten.Subtraktion:
-			Console.WriteLine($"{z1} - {z2} = {z1 - z2}");
-			return z1 - z2;
-		case Rechenarten.Multiplikation:
-			Console.WriteLine($"{z1} * {z2} = {z1 * z2}");
-			return z1 * z2;
-		case Rechenarten.Division:
-			Console.WriteLine($"{z1} / {z2} = {z1 / z2}");
-			return z1 / z2;
-		default: return double.NaN;
+		if (!MotorLaeuft)
+		{
+			MotorLaeuft = true;
+			Console.WriteLine("Motor wurde gestartet");
+		}
+		else
+		{
+			Console.WriteLine("Motor ist bereits gestartet");
+		}
 	}
-}
 
-double ZahlEingabe(string text)
-{
-	while (true)
+	public void StoppeMotor()
 	{
-		Console.Write(text);
-		string eingabe = Console.ReadLine();
+		if (MotorLaeuft && AktV <= 0)
+		{
+			MotorLaeuft = false;
+			Console.WriteLine("Motor wurde gestoppt");
+		}
+		else
+		{
+			Console.WriteLine("Motor konnte nicht gestoppt werden");
+		}
+	}
 
-		int result;
-		if (int.TryParse(eingabe, out result))
-			return result;
-
-        Console.WriteLine("Eingabe ist nicht numerisch!\n");
-    }
-}
-
-Rechenarten RechenartEingabe()
-{
-	while (true)
+	public string Info()
 	{
-		string info = "";
-		foreach (Rechenarten art in Enum.GetValues<Rechenarten>())
-			info += $"{(int) art}: {art}\n";
-		double zahl = ZahlEingabe($"Gib eine Rechenart ein: \n{info}");
+		return $"Das Fahrzeug {Name} könnte maximal {MaxV}km/h fahren, und kostet {Preis}€. {(MotorLaeuft ? $"Es fährt momentan {AktV}km/h." : "")}";
+	}
 
-		//if (zahl >= 1 && zahl <= 4)
-		//	return (Rechenarten) zahl;
+	public void Beschleunige(int a)
+	{
+		//if (MotorLaeuft)
+		//{
+		//	if (AktV + a > 0)
+		//	{
+		//		if (AktV + a <= MaxV)
+		//		{
+		//			AktV += a;
+		//		}
+		//		else
+		//		{
+		//			Console.WriteLine($"Geschwindigkeit darf die Maximalgeschwindigkeit ({MaxV}km/h) nicht überschreiten");
+		//		}
+		//	}
+		//	else
+		//	{
+		//		Console.WriteLine("Geschwindigkeit darf 0km/h nicht unterschreiten");
+		//	}
+		//}
+		//else
+		//{
+		//		Console.WriteLine("Der Motor muss laufen um beschleunigen zu können");
+		//}
 
-		Rechenarten r = (Rechenarten) zahl;
-		if (Enum.IsDefined<Rechenarten>(r))
-			return r;
-        Console.WriteLine("Eingabe ist keine gültige Rechenart!\n");
+		if (!MotorLaeuft)
+		{
+			Console.WriteLine("Der Motor muss laufen um beschleunigen zu können");
+			return; //Beende die Funktion
+		}
+
+		if (AktV + a < 0)
+		{
+			Console.WriteLine("Geschwindigkeit darf 0km/h nicht unterschreiten");
+			return;
+		}
+
+		if (AktV + a > MaxV)
+		{
+			Console.WriteLine($"Geschwindigkeit darf die Maximalgeschwindigkeit ({MaxV}km/h) nicht überschreiten");
+			return;
+		}
+
+		//Wenn alle Fehler erfolgreich behandelt:
+		AktV += a;
+        Console.WriteLine($"Fahrzeug hat um {a}km/h beschleunigt");
     }
-}
 
-enum Rechenarten
-{
-	Addition = 1,
-	Subtraktion,
-	Multiplikation,
-	Division
+    public Fahrzeug(string name, int maxV, int preis)
+    {
+		Name = name;
+		MaxV = maxV;
+		Preis = preis;
+    }
 }
