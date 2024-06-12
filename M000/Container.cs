@@ -1,6 +1,6 @@
 ﻿namespace M000;
 
-public class Schiff : Fahrzeug, IBeladbar
+public class Container : IBeladbar
 {
 	public Fahrzeug GeladenesFahrzeug { get; set; }
 
@@ -13,7 +13,7 @@ public class Schiff : Fahrzeug, IBeladbar
 		}
 		else
 		{
-			Console.WriteLine($"Dieses Schiff hat bereits ein Fahrzeug geladen: {GeladenesFahrzeug.Name}");
+			Console.WriteLine($"Dieser Container hat bereits ein Fahrzeug geladen: {GeladenesFahrzeug.Name}");
 		}
 	}
 
@@ -21,16 +21,12 @@ public class Schiff : Fahrzeug, IBeladbar
 	{
 		if (GeladenesFahrzeug == null)
 		{
-			Console.WriteLine("Momentan ist kein Fahrzeug geladen");
+            Console.WriteLine("Momentan ist kein Fahrzeug geladen");
 			return null;
-		}
+        }
 
 		Fahrzeug fzg = GeladenesFahrzeug;
 		GeladenesFahrzeug = null;
 		return fzg;
-	}
-	
-	public Schiff(string name, int maxV, int preis) : base(name, maxV, preis)
-	{
 	}
 }

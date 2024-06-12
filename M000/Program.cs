@@ -21,3 +21,47 @@ foreach (Fahrzeug fzg in fahrzeuge)
 }
 
 Console.WriteLine($"Es wurden {pkw} PKW, {schiff} Schiffe, {flugzeug} Flugzeuge erzeugt");
+
+void TesteBeladung(object o1, object o2)
+{
+	//if (o1 is IBeladbar)
+	//{
+	//	IBeladbar b = (IBeladbar) o1;
+	//	if (o2 is Fahrzeug)
+	//	{
+	//		Fahrzeug fzg = (Fahrzeug) o2;
+	//		b.Belade(fzg);
+	//           Console.WriteLine("Objekt 1 hat Objekt 2 geladen");
+	//       }
+	//}
+	//else if (o2 is IBeladbar)
+	//{
+	//	IBeladbar b = (IBeladbar) o2;
+	//	if (o1 is Fahrzeug)
+	//	{
+	//		Fahrzeug fzg = (Fahrzeug) o1;
+	//		b.Belade(fzg);
+	//		Console.WriteLine("Objekt 2 hat Objekt 1 geladen");
+	//	}
+	//}
+	//else
+	//{
+	//       Console.WriteLine("Keines der beiden Objekte kann das andere aufladen");
+	//   }
+
+
+	if (o1 is IBeladbar b && o2 is Fahrzeug fzg)
+	{
+		b.Belade(fzg);
+		Console.WriteLine("Objekt 1 hat Objekt 2 geladen");
+	}
+	else if (o2 is IBeladbar b2 && o1 is Fahrzeug fzg2)
+	{
+		b2.Belade(fzg2);
+		Console.WriteLine("Objekt 2 hat Objekt 1 geladen");
+	}
+	else
+	{
+		Console.WriteLine("Keines der beiden Objekte kann das andere aufladen");
+	}
+}
