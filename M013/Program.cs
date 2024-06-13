@@ -51,7 +51,7 @@ internal class Program
         Console.WriteLine(zahlen.FirstOrDefault(e => e % 50 == 0)); //0
 		#endregion
 
-		#region Linq mit Objektlsite
+		#region Linq mit Objektliste
 		List<Fahrzeug> fahrzeuge = new List<Fahrzeug>
 		{
 			new Fahrzeug(251, FahrzeugMarke.BMW),
@@ -128,8 +128,74 @@ internal class Program
 		fahrzeuge.Skip(page * 5).Take(5);
 		page++;
 		fahrzeuge.Skip(page * 5).Take(5);
+
+		//Select
+		//Wandelt die Liste in eine neue Form um
+		//-> beliebige Operationen auf eine Liste anwenden
+
+		//Zwei Anwendungsfälle:
+		//1. Fall: Einzelnes Feld entnehmen (80%)
+
+		//Aufgabenstellung: Liste, die nur die Automarken enthält
+		fahrzeuge.Select(e => e.Marke); //Nur Marken ohne Rest vom Fahrzeug
+
+		//Schritt 2: Alle Marken eindeutig machen
+		fahrzeuge.Select(e => e.Marke).Distinct(); //Marken, welche wir in unserem Autohaus haben
+
+		//Liste mit MaxGeschwindigkeiten
+		fahrzeuge.Select(e => e.MaxV); //int-Liste mit den Geschwindigkeiten
+
+		//2. Fall: Liste transformieren (20%)
+		//Beispiel 1: Liste von 0 bis 1 mit 0.1 Schritten
+		List<double> kommazahlen = new();
+		for (int i = 0; i < 11; i++)
+		{
+			kommazahlen.Add(i / 10.0);
+		}
+
+		//Mit Select
+		Enumerable.Range(0, 11).Select(e => e / 10.0); //Gehe alle Elemente durch, und gib diese in der Form von dem Ausdruck innerhalb von Select zurück
+
+		//Beispiel 2: Gesamte Liste casten
+		List<int> ints = Enumerable.Range(0, 20).ToList();
+
+		//int Liste zu double Liste umwandeln
+		ints.Select(e => (double) e);
+
+		//Beispiel 3: Gesamte Liste in schöne Ausgaben konvertieren
+		fahrzeuge.Select(e => $"Das Fahrzeug hat die Marke {e.Marke} und kann maximal {e.MaxV}km/h fahren.");
 		#endregion
-	}
+
+		#region IEnumerable
+		//IEnumerable
+		//Warum geben alle Linq Funktionen ein IEnumerable zurück und nicht ein Array oder eine List?
+
+		//IEnumerable ist nur eine Anleitung zum Erstellen der fertigen Liste
+		//Wenn die Anleitung ausgeführt wird, werden die Elemente erzeugt
+		Enumerable.Range(0, 1_000_000_000); //Anleitung zum Erstellen einer Liste der Zahlen von 0 bis 10 (sofort, kein Resourcenverbrauch)
+		//Enumerable.Range(0, 1_000_000_000).ToList(); //Hier werden die Werte erzeugt (dauert länger, belegt Resourcen)
+		IEnumerable<Fahrzeug> vws = fahrzeuge.Where(e => e.Marke == FahrzeugMarke.VW); //Wenn möglich, immer IEnumerable benutzen
+		#endregion
+
+		#region Erweiterungsmethoden
+		//Erweiterungsmethoden
+		//An beliebige Typen zusätzlichen Code anhängen
+
+		//Anforderungen: static class, static Methode, this Parameter
+		int zahl = 2849;
+        Console.WriteLine(zahl.Quersumme()); //Alle ints im gesamten Projekt können jetzt diese Funktion
+
+		//Eigene Linq-Funktion
+		//Beispiel: Funktion schreiben, welche eine Liste nach Elementen sucht, die in einer gegebenen Liste
+		//Beispiel: Prüfen, welche Fahrzeuge vom Typ BMW oder VW sind
+		fahrzeuge.Where(e => e.Marke == FahrzeugMarke.BMW || e.Marke == FahrzeugMarke.VW);
+
+		List<FahrzeugMarke> marken = [FahrzeugMarke.BMW, FahrzeugMarke.VW];
+		fahrzeuge.Where(e => marken.Contains(e.Marke));
+
+		fahrzeuge.In(e => e.Marke, marken); //Eigene Linq Funktion verwenden
+        #endregion
+    }
 }
 
 [DebuggerDisplay("Marke: {Marke}, MaxV: {MaxV}")]
