@@ -8,10 +8,10 @@ internal class Program
 	static void Main(string[] args)
 	{
 		#region File lesen
-		string readJson = File.ReadAllText(@"..\..\..\Personen.json");
+		string readJson = File.ReadAllText(@"..\..\..\LabCode\Personen.json");
 		List<Person> personen = JsonSerializer.Deserialize<List<Person>>(readJson)!;
 		#endregion
-		
+
 		//Hier eigenen Code schreiben
 	}
 }
